@@ -53,14 +53,18 @@
 (evil-leader/set-leader ",")
 
 (setq fiplr-root-markers '(".git" ".svn"))
-(setq fiplr-ignored-globs '((directories (".git" ".svn" ".repl" "out" "target"))
-                            (files ("*.jpg" "*.png" "*.zip" "*~"))))
+(setq fiplr-ignored-globs '((directories (".git" ".svn" ".repl" "out" "target" "node_modules"))
+                            (files ("*.jpg" "*.png" "*.zip" "*~" ".*" "#*"))))
+
+;; make ctrl-t trigger flipr find file
+(global-set-key (kbd "C-x C-p") 'fiplr-find-file)
 
 (add-to-list 'load-path
              "~/.emacs.d/vendor"
              "~/.emacs.d/themes")
 
-(add-to-list 'auto-mode-alist '("\\.jsx?\\'" . js2-mode)) ; set js2-mode as major mode for javascript
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)) ; set js2-mode as major mode for javascript
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode)) ; set js2-mode as major mode for javascript
 
 
 (require 'evil)
