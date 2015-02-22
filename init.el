@@ -48,6 +48,9 @@
                       markdown-mode
                       cider))
 
+(dolist (package my-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
 
 (global-evil-leader-mode)
 (evil-leader/set-leader ",")
@@ -188,6 +191,14 @@
   (set-frame-font (font-spec :family "LiberationMono"
                              :size 15
                              :antialias nil))
+  (fix-mode-line))
+
+(defun stress-relief-mode ()
+  (interactive)
+  (setq mac-allow-anti-aliasing t)
+  (set-frame-font (font-spec :family "PragmataPro"
+                             :size 16
+                             :antialias t))
   (fix-mode-line))
 
 ;; Always change to the code directory on the platform
