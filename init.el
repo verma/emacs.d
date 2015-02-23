@@ -208,8 +208,10 @@
   (when (file-exists-p d)
     (setq default-directory d)))
 
-; Always start in noob mode
-(noob-mode)
+;; much hacking cred deserves hacker mode
+(if (eq system-type 'berkeley-unix)
+    (hacker-mode)
+  (noob-mode))
 
 ; Always start with the night mode
 (set-night-time)
