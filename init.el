@@ -162,7 +162,7 @@
 
 ;; Some utility functions to do stuff
 (defun fix-mode-line ()
-  (set-face-attribute 'mode-line nil :family "PragmataPro" :height 140))
+  (set-face-attribute 'mode-line nil :family "PragmataPro" :height 80))
 
 
 (defun set-day-time ()
