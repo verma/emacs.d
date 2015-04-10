@@ -46,6 +46,7 @@
                       company
                       flycheck
                       markdown-mode
+                      smart-tabs-mode
                       cider))
 
 (dolist (package my-packages)
@@ -85,6 +86,7 @@
 (require 'less-css-mode)
 (require 'smex)
 (require 'web-mode)
+(require 'smart-tabs-mode)
 
 ; initialize smex and bind keys
 (smex-initialize)
@@ -92,6 +94,9 @@
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
+;; make javascript use smart tabs because Ross likes them
+(smart-tabs-insinuate 'javascript)
+(smart-tabs-advice js2-indent-line js2-basic-offset)
 
 ; Configure web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
