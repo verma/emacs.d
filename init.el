@@ -172,6 +172,7 @@
         'init-state
         'will-mount
         'did-mount
+        'did-update
         'should-update
         'will-receive-props
         'will-update
