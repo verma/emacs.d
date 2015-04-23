@@ -165,6 +165,23 @@
   '(add-to-list 'company-backends 'company-omnisharp))
 
 
+;; Prettify certain clojure things
+(defvar om-methods
+  (list 'render
+        'render-state
+        'init-state
+        'will-mount
+        'did-mount
+        'should-update
+        'will-receive-props
+        'will-update
+        'display-name
+        'will-unmount)
+  "Methods that should receive sexy clojure indents.")
+
+(dolist (v om-methods)
+  (put-clojure-indent v 'defun))
+
 ;; Some utility functions to do stuff
 (defun fix-mode-line ()
   (set-face-attribute 'mode-line nil :family "PragmataPro" :height 80))
