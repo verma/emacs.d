@@ -47,6 +47,8 @@
                       flycheck
                       markdown-mode
                       smart-tabs-mode
+                      exec-path-from-shell
+                      racket-mode
                       cider))
 
 (dolist (package my-packages)
@@ -87,6 +89,7 @@
 (require 'smex)
 (require 'web-mode)
 (require 'smart-tabs-mode)
+(require 'racket-mode)
 
 ; initialize smex and bind keys
 (smex-initialize)
