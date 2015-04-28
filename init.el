@@ -183,8 +183,13 @@
         'will-unmount)
   "Methods that should receive sexy clojure indents.")
 
+
 (dolist (v om-methods)
   (put-clojure-indent v 'defun))
+
+;; Return key should auto-indent stuff
+;;
+(global-set-key "\C-m" 'newline-and-indent)
 
 ;; Some utility functions to do stuff
 (defun fix-mode-line ()
@@ -226,6 +231,20 @@
                              :size 16
                              :antialias t))
   (fix-mode-line))
+
+(defun many-noob-mode ()
+  (interactive)
+  (setq mac-allow-anti-aliasing t)
+  (set-frame-font (font-spec :family "Consolas"
+                             :size 18
+                             :antialias t))
+  (fix-mode-line))
+
+(defun lispy-spacing ()
+  (interactive)
+  (setq-default line-spacing 5))
+
+
 
 ;; Always change to the code directory on the platform
 (defvar startup-dirs '("~/Projects"))
