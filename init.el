@@ -16,247 +16,47 @@
 
 (setq find-file-visit-truename t)
 
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
 
-(package-initialize)
+;; the vendor scripts go into vendor directory and user ones go to, you guess it.
+;; we declare them as globals here since some of the setup scripts need those
+;; to require stuff correctly.  E.g. we don't want evil sitting in the vendor directory
+;; but rather vendor/evil.
+;;
+(setq vendor-directory
+      (expand-file-name "vendor" user-emacs-directory))
 
-(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+;; The same goes for user directory, we just have it here for completeness sake.
+;;
+(setq user-directory
+      (expand-file-name "user" user-emacs-directory))
 
-(defvar my-packages '(better-defaults
-                      clojure-mode
-                      projectile
-                      evil
-                      evil-leader
-                      evil-paredit
-                      ido-vertical-mode
-                      rainbow-delimiters
-                      expand-region
-                      js2-mode
-                      clj-refactor
-                      yasnippet
-                      smex
-                      less-css-mode
-                      ample-theme
-                      web-mode
-					  fiplr
-                      omnisharp
-                      csharp-mode
-                      company
-                      flycheck
-                      markdown-mode
-                      smart-tabs-mode
-                      exec-path-from-shell
-                      racket-mode
-                      cider))
+;; this configuration comes pre-packages with everything it needs.
+;; Package managers are not allowed because they break what I expect out
+;; of my editor and then I hate my life.
+;;
+(add-to-list 'load-path vendor-directory)
 
-(dolist (package my-packages)
-  (unless (package-installed-p package)
-    (package-install package)))
+;; we don't really directly include anything, we just require our own configuration
+;; which auto-requires everything it needs
+;;
+(add-to-list 'load-path user-directory)
 
-(global-evil-leader-mode)
-(evil-leader/set-leader ",")
-
-(setq fiplr-root-markers '(".git" ".svn"))
-(setq fiplr-ignored-globs '((directories (".git" ".svn" ".repl" "out" "target" "node_modules"))
-                            (files ("*.jpg" "*.png" "*.zip" "*~" ".*" "#*"))))
-
-;; make ctrl-t trigger flipr find file
-(global-set-key (kbd "C-x C-p") 'fiplr-find-file)
-
+;; Make sure themes are included too, or they'd feel left out and won't trip you out
+;; as much
 (add-to-list 'load-path
-             "~/.emacs.d/vendor"
-             "~/.emacs.d/themes")
+             (expand-file-name "themes" user-emacs-directory))
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)) ; set js2-mode as major mode for javascript
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode)) ; set js2-mode as major mode for javascript
-
-
-(require 'evil)
-(require 'evil-leader)
-(require 'evil-paredit)
-(require 'hl-line)
-(require 'fiplr)
-(require 'ido)
-(require 'ido-vertical-mode)
-(require 'rainbow-delimiters)
-(require 'powerline)
-(require 'expand-region)
-(require 'clj-refactor)
-(require 'yasnippet)
-(require 'less-css-mode)
-(require 'smex)
-(require 'web-mode)
-(require 'smart-tabs-mode)
-(require 'racket-mode)
-
-; initialize smex and bind keys
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-;; make javascript use smart tabs because Ross likes them
-(smart-tabs-insinuate 'javascript)
-(smart-tabs-advice js2-indent-line js2-basic-offset)
-
-; Configure web-mode
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
-; Setup modeline/powerline
-
-(ido-mode t)
-(ido-vertical-mode t)
-(evil-mode t)                ; have evil mode on all the time
-(paredit-mode t)
-(pending-delete-mode t)                 ; Replace contents when typing on selection with expand-region
-(yas-global-mode 1)                     ; enable snippets
-
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-
-;; turn on paredit when clojure is being edited
-(add-hook 'clojure-mode-hook 'enable-paredit-mode)
-(add-hook 'clojure-mode-hook 'evil-paredit-mode)
-(add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
-
-(add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
-
-;; some scrolling customizations
-;; scroll one line at a time (less "jumpy" than defaults)
-(setq mouse-wheel-scroll-amount '(3 ((shift) . 3))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-(setq-default cursor-type 'bar)
-
-(evil-leader/set-key
-  "W" 'paredit-wrap-round
-  "w[" 'paredit-wrap-square
-  "w{" 'paredit-wrap-curly)
-
-;; some refactor setup
-(add-hook 'clojure-mode-hook (lambda ()
-                               (clj-refactor-mode 1)
-                               ;; keybindings go here
-                               (cljr-add-keybindings-with-modifier "C-s-")))
-
-(projectile-global-mode)
-
-;; much nice cursor colors for evil mode
+;; Initialize things
 ;;
-(setq evil-emacs-state-cursor '("red" box))
-(setq evil-normal-state-cursor '("green" box))
-(setq evil-visual-state-cursor '("orange" box))
-(setq evil-insert-state-cursor '("red" bar))
-(setq evil-replace-state-cursor '("red" bar))
-(setq evil-operator-state-cursor '("red" hollow))
-
-(global-hl-line-mode)
-
-;; Configure csharp mode
-(add-hook 'csharp-mode-hook (lambda ()
-                                 (c-set-offset 'brace-list-intro 0)
-                                 (c-set-offset 'brace-list-open 0)))
-
-;; Make sure company mode is always available
-(add-hook 'after-init-hook 'global-company-mode)
-
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-omnisharp))
-
-
-;; Prettify certain clojure things
-(defvar om-methods
-  (list 'render
-        'render-state
-        'init-state
-        'will-mount
-        'did-mount
-        'did-update
-        'should-update
-        'will-receive-props
-        'will-update
-        'display-name
-        'will-unmount)
-  "Methods that should receive sexy clojure indents.")
-
-
-(dolist (v om-methods)
-  (put-clojure-indent v 'defun))
-
-;; Return key should auto-indent stuff
-;;
-(global-set-key "\C-m" 'newline-and-indent)
-
-;; Some utility functions to do stuff
-(defun fix-mode-line ()
-  (set-face-attribute 'mode-line nil :family "PragmataPro" :height 80))
-
-
-(defun set-day-time ()
-  (interactive)
-  (load-file "~/.emacs.d/themes/tomorrow/color-theme-tomorrow.el")
-  (color-theme-tomorrow)
-  (fix-mode-line))
-
-
-(defun set-night-time ()
-  (interactive)
-  (load-file "~/.emacs.d/themes/spacegray-theme.el")
-  (fix-mode-line))
-
-(defun hacker-mode ()
-  (interactive)
-  (setq mac-allow-anti-aliasing nil)
-  (set-frame-font (font-spec :family "Andale Mono"
-                             :size 14
-                             :antialias nil))
-  (fix-mode-line))
-
-(defun noob-mode ()
-  (interactive)
-  (setq mac-allow-anti-aliasing t)
-  (set-frame-font (font-spec :family "LiberationMono"
-                             :size 15
-                             :antialias nil))
-  (fix-mode-line))
-
-(defun stress-relief-mode ()
-  (interactive)
-  (setq mac-allow-anti-aliasing t)
-  (set-frame-font (font-spec :family "PragmataPro"
-                             :size 16
-                             :antialias t))
-  (fix-mode-line))
-
-(defun many-noob-mode ()
-  (interactive)
-  (setq mac-allow-anti-aliasing t)
-  (set-frame-font (font-spec :family "Consolas"
-                             :size 18
-                             :antialias t))
-  (fix-mode-line))
-
-(defun lispy-spacing ()
-  (interactive)
-  (setq-default line-spacing 5))
-
-
-
-;; Always change to the code directory on the platform
-(defvar startup-dirs '("~/Projects"))
-
-(dolist (d startup-dirs)
-  (when (file-exists-p d)
-    (setq default-directory d)))
-
-;; much hacking cred deserves hacker mode
-(if (eq system-type 'berkeley-unix)
-    (hacker-mode)
-  (noob-mode))
+(require 'init-better-defaults)
+(require 'init-powerline)
+(require 'init-projectile)
+(require 'init-evil)
+(require 'init-clojure-mode)
+(require 'init-smex)
+(require 'init-webdev)
+(require 'init-fiplr)
+(require 'init-mine)
 
 ; Always start with the night mode
 (set-night-time)

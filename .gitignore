@@ -1,4 +1,6 @@
 .DS_Store
+Thumbs.db
+*.elc
 elpa/
 auto-save-list/
 bookmarks
