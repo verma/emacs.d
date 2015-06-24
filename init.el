@@ -56,6 +56,8 @@
 (require 'init-smex)
 (require 'init-webdev)
 (require 'init-fiplr)
+(require 'init-cider)
+
 (require 'init-mine)
 
 ; Always start with the night mode
