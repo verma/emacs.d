@@ -4,7 +4,7 @@
 
 ;; Some utility functions to do stuff
 (defun fix-mode-line ()
-  (set-face-attribute 'mode-line nil :family "PragmataPro" :height 130))
+  (set-face-attribute 'mode-line nil :family "Andale Mono" :height 100))
 
 (defun set-day-time ()
   (interactive)

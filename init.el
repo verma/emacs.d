@@ -49,7 +49,8 @@
 ;; Initialize things
 ;;
 (require 'init-better-defaults)
-(require 'init-powerline)
+;; (require 'init-powerline)
+(require 'init-modeline)
 (require 'init-projectile)
 (require 'init-evil)
 (require 'init-clojure-mode)
@@ -62,4 +63,3 @@
 
 ; Always start with the night mode
 (set-night-time)
-
