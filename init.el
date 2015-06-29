@@ -58,6 +58,7 @@
 (require 'init-webdev)
 (require 'init-fiplr)
 (require 'init-cider)
+(require 'init-less)
 
 (require 'init-mine)
 

@@ -51,8 +51,21 @@
                              :antialias t))
   (fix-mode-line))
 
+(defun many-noob-pro-mode ()
+  (interactive)
+  (setq mac-allow-anti-aliasing t)
+  (set-frame-font (font-spec :family "Source Code Pro"
+                             :size 18
+                             :antialias t))
+  (fix-mode-line))
+
 (defun lispy-spacing ()
   (interactive)
   (setq-default line-spacing 3))
+
+(defun blind-mode ()
+  (interactive)
+  (lispy-spacing)
+  (many-noob-mode))
 
 
