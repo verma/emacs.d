@@ -59,8 +59,10 @@
 (require 'init-fiplr)
 (require 'init-cider)
 (require 'init-less)
+(require 'init-scss)
 
 (require 'init-mine)
 
 ; Always start with the night mode
 (set-night-time)
+(blind-mode)

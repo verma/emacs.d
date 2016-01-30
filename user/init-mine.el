@@ -15,8 +15,7 @@
 
 (defun set-night-time ()
   (interactive)
-  (load-file "~/.emacs.d/themes/noctilux-definitions.el")
-  (load-file "~/.emacs.d/themes/noctilux-theme.el")
+  (load-file "~/.emacs.d/themes/atom-one-dark-theme.el")
   (fix-mode-line))
 
 (defun hacker-mode ()
