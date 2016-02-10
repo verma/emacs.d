@@ -3,6 +3,7 @@ Thumbs.db
 *.elc
 elpa/
 auto-save-list/
+backups/
 bookmarks
 places
 projectile-bookmarks.eld
