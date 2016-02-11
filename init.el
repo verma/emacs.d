@@ -98,9 +98,13 @@
 
 
 ;; font
-(setq mac-allow-anti-aliasing t)
-(set-frame-font (font-spec :family "Consolas"
-                           :size 16
-                           :antialias t))
+(if (eq system-type 'darwin)
+  (setq mac-allow-anti-aliasing t))
+
+(set-face-attribute 'default nil :font "Consolas-10")
+(set-frame-font "Consolas-10" nil t)
 (setq-default lispy-spacing 3)
+
+
+;; theme
 (load-theme 'base16-eighties-dark t)
