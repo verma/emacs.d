@@ -10,8 +10,6 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
 
-(package-initialize)
-
 ; list the packages you want
 (setq package-list
       '(better-defaults
@@ -28,6 +26,7 @@
         smex
         fiplr
         clj-refactor
+        js2-mode
         base16-theme))
 
 ; activate all the packages (in particular autoloads)
