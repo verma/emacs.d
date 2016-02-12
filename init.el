@@ -96,7 +96,6 @@
 
 (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
-
 ;; font
 (if (eq system-type 'darwin)
   (setq mac-allow-anti-aliasing t))
@@ -107,4 +106,24 @@
 
 
 ;; theme
-(load-theme 'base16-eighties-dark t)
+(defun daytime-colors ()
+  (interactive)
+  (load-theme 'base16-flat-light t)
+  (set-face-background 'hl-line "#ffffff")
+  (set-face-foreground 'highlight nil))
+
+(defun nighttime-colors ()
+  (interactive)
+  (load-theme 'base16-flat-dark t)
+  (set-face-background 'hl-line "#333333")
+  (set-face-foreground 'highlight nil))
+
+(defun current-hour ()
+  (nth 2 (decode-time)))
+
+(defun set-time-based-theme ()
+  (let ((hour (current-hour)))
+    (if (< 7 hour 19) (daytime-colors) (nighttime-colors))))
+
+(set-time-based-theme)
+
