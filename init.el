@@ -27,7 +27,8 @@
         fiplr
         clj-refactor
         js2-mode
-        base16-theme))
+        base16-theme
+        yaml-mode))
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -60,7 +61,7 @@
 (powerline-center-theme)
 
 ;; clojure-mode
-(add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'evil-paredit-mode)
 
 (defvar om-methods
