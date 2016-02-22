@@ -28,6 +28,7 @@
         clj-refactor
         js2-mode
         base16-theme
+        web-mode
         yaml-mode))
 
 ; activate all the packages (in particular autoloads)
@@ -96,6 +97,9 @@
     (cljr-add-keybindings-with-prefix "C-c C-m"))
 
 (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+
+;; web-mode
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;; font
 (if (eq system-type 'darwin)
