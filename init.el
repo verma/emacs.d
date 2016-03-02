@@ -29,6 +29,7 @@
         js2-mode
         base16-theme
         web-mode
+        paper-theme
         yaml-mode
         company))
 
@@ -118,14 +119,18 @@
       (if (eq system-type 'darwin)
           "Consolas-14"
         "Consolas-10"))
-        
+
 
 (set-face-attribute 'default nil :font preferred-font)
 (set-frame-font preferred-font nil t)
 (setq-default lispy-spacing 3)
 
-
 ;; theme
+
+(defun bright-colors ()
+  (interactive)
+  (load-theme 'paper t))
+
 (defun daytime-colors ()
   (interactive)
   (load-theme 'base16-flat-light t)
