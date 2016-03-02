@@ -29,7 +29,8 @@
         js2-mode
         base16-theme
         web-mode
-        yaml-mode))
+        yaml-mode
+        company))
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -62,8 +63,13 @@
 (powerline-center-theme)
 
 ;; clojure-mode
-(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'clojure-mode-hook 'evil-paredit-mode)
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            ;; enable paredit mode
+            (paredit-mode)
+            (evil-paredit-mode)
+            ;; need C-p to show completions
+            ))
 
 (defvar om-methods
   (list 'render
@@ -100,6 +106,9 @@
 
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+;; company mode
+(global-company-mode)
 
 ;; font
 (if (eq system-type 'darwin)
