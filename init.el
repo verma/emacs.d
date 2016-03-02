@@ -105,8 +105,14 @@
 (if (eq system-type 'darwin)
   (setq mac-allow-anti-aliasing t))
 
-(set-face-attribute 'default nil :font "Consolas-10")
-(set-frame-font "Consolas-10" nil t)
+(setq preferred-font
+      (if (eq system-type 'darwin)
+          "Consolas-14"
+        "Consolas-10"))
+        
+
+(set-face-attribute 'default nil :font preferred-font)
+(set-frame-font preferred-font nil t)
 (setq-default lispy-spacing 3)
 
 
