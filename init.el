@@ -29,9 +29,10 @@
         js2-mode
         base16-theme
         web-mode
-        paper-theme
         yaml-mode
-        company))
+        projectile
+        company
+        helm))
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -40,7 +41,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-; install the missing packages
+; install the missing package-s
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
@@ -83,7 +84,10 @@
         'will-receive-props
         'will-update
         'display-name
-        'will-unmount)
+        'will-unmount
+        'ident
+        'query
+        'query-param)
   "Methods that should receive sexy clojure indents.")
 
 (defun customize-clojure-indents ()
@@ -125,21 +129,35 @@
 (set-frame-font preferred-font nil t)
 (setq-default lispy-spacing 3)
 
-;; theme
+;; helm
+(require 'helm-config)
 
-(defun bright-colors ()
-  (interactive)
-  (load-theme 'paper t))
+(helm-mode 1)
+(setq helm-M-x-fuzzy-match t
+      helm-buffers-fuzzy-matching t)
+
+(projectile-global-mode)
+
+(setq projectile-enable-caching t)
+(setq projectile-switch-project-action 'helm-projectile)
+(setq projectile-completion-system 'helm)
+
+(global-set-key (kbd "M-x") 'undefined)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x C-p") 'helm-projectile-find-file)
+
+(global-set-key (kbd "C-x b") 'helm-projectile-switch-to-buffer)
 
 (defun daytime-colors ()
   (interactive)
-  (load-theme 'base16-flat-light t)
+  (load-theme 'base16-bright-light t)
   (set-face-background 'hl-line "#ffffff")
   (set-face-foreground 'highlight nil))
 
 (defun nighttime-colors ()
   (interactive)
-  (load-theme 'base16-flat-dark t)
+  (load-theme 'base16-eighties-dark t)
   (set-face-background 'hl-line "#333333")
   (set-face-foreground 'highlight nil))
 
