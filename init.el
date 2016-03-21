@@ -133,7 +133,7 @@
       (if (eq system-type 'darwin)
           "Consolas-14"
         "Consolas-10"))
-        
+
 
 (set-face-attribute 'default nil :font preferred-font)
 (set-frame-font preferred-font nil t)
@@ -159,7 +159,6 @@
 
 (global-set-key (kbd "C-x b") 'helm-projectile-switch-to-buffer)
 
-;; theme
 (defun daytime-colors ()
   (interactive)
   (load-theme 'base16-bright-light t)
