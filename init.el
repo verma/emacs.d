@@ -32,7 +32,8 @@
         yaml-mode
         projectile
         company
-        helm))
+        helm
+        lfe-mode))
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -50,6 +51,15 @@
 (setq inhibit-startup-message t) ;; no startup message
 (global-hl-line-mode) ;; highlight current line
 (setq exec-path (append exec-path '("/usr/local/bin")))
+
+(setq backup-by-copying t
+      backup-directory-alist
+      '(("." . "~/.saves"))
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
+
 
 ;; evil
 (evil-mode 1)
@@ -168,6 +178,10 @@
 (defun set-time-based-theme ()
   (let ((hour (current-hour)))
     (if (< 7 hour 19) (daytime-colors) (nighttime-colors))))
+
+(defun larger-font ()
+  (interactive)
+  (set-default-font "Consolas-18"))
 
 (set-time-based-theme)
 
