@@ -33,7 +33,9 @@
         projectile
         company
         helm
-        lfe-mode))
+        lfe-mode
+        flycheck
+        erlang))
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -59,6 +61,10 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
+
+;; visual bell glitches fixes.
+(setq visible-bell nil) ;; The default
+(setq ring-bell-function 'ignore)
 
 
 ;; evil
@@ -125,6 +131,9 @@
 ;; company mode
 (global-company-mode)
 
+;; lfe mode
+(add-hook 'lfe-mode-hook #'paredit-mode)
+
 ;; font
 (if (eq system-type 'darwin)
   (setq mac-allow-anti-aliasing t))
@@ -152,12 +161,23 @@
 (setq projectile-switch-project-action 'helm-projectile)
 (setq projectile-completion-system 'helm)
 
+(defun my-find-files ()
+  (interactive)
+  (if (projectile-project-p)
+      (helm-projectile)
+    (fiplr-find-file)))
+
+(defun my-switch-to-buffer ()
+  (interactive)
+  (if (projectile-project-p)
+      (helm-projectile)
+    (helm-for-files)))
+
 (global-set-key (kbd "M-x") 'undefined)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-x C-p") 'helm-projectile-find-file)
-
-(global-set-key (kbd "C-x b") 'helm-projectile-switch-to-buffer)
+(global-set-key (kbd "C-x C-p") 'my-find-files) 
+(global-set-key (kbd "C-x b") 'my-switch-to-buffer) 
 
 (defun daytime-colors ()
   (interactive)
