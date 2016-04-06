@@ -202,5 +202,17 @@
   (interactive)
   (set-default-font "Consolas-18"))
 
+(defun enable-ross-mode ()
+  (interactive)
+  (setq-default indent-tabs-mode t)
+  (setq-default tab-width 4))
+
+(defun disable-ross-mode ()
+  (interactive)
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 8))
+
+
+
 (set-time-based-theme)
 
