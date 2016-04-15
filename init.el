@@ -212,7 +212,29 @@
   (setq-default indent-tabs-mode nil)
   (setq-default tab-width 8))
 
+(defun vt220 ()
+  (interactive)
 
+  (let ((vt220-font "Glass TTY VT220-20"))
+    (set-face-attribute 'default nil :font vt220-font)
+    (set-frame-font vt220-font nil t))
+  
+  (set-default-font "Glass TTY VT220-20")
+  (load-theme 'base16-greenscreen-dark t)
+  (set-face-background 'hl-line "#1f1f1f")
+  (set-face-foreground 'highlight nil))
+
+(defun vt220-light ()
+  (interactive)
+
+  (let ((vt220-font "Glass TTY VT220-20"))
+    (set-face-attribute 'default nil :font vt220-font)
+    (set-frame-font vt220-font nil t))
+  
+  (set-default-font "Glass TTY VT220-20")
+  (load-theme 'base16-greenscreen-light t)
+  (set-face-background 'hl-line "#aaaaaa")
+  (set-face-foreground 'highlight nil))
 
 (set-time-based-theme)
 
