@@ -176,8 +176,8 @@
 (global-set-key (kbd "M-x") 'undefined)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-x C-p") 'my-find-files) 
-(global-set-key (kbd "C-x b") 'my-switch-to-buffer) 
+(global-set-key (kbd "C-x C-p") 'my-find-files)
+(global-set-key (kbd "C-x b") 'my-switch-to-buffer)
 
 (defun daytime-colors ()
   (interactive)
@@ -218,7 +218,7 @@
   (let ((vt220-font "Glass TTY VT220-20"))
     (set-face-attribute 'default nil :font vt220-font)
     (set-frame-font vt220-font nil t))
-  
+
   (set-default-font "Glass TTY VT220-20")
   (load-theme 'base16-greenscreen-dark t)
   (set-face-background 'hl-line "#1f1f1f")
@@ -230,10 +230,22 @@
   (let ((vt220-font "Glass TTY VT220-20"))
     (set-face-attribute 'default nil :font vt220-font)
     (set-frame-font vt220-font nil t))
-  
+
   (set-default-font "Glass TTY VT220-20")
   (load-theme 'base16-greenscreen-light t)
   (set-face-background 'hl-line "#aaaaaa")
+  (set-face-foreground 'highlight nil))
+
+(defun sharp-mode ()
+  (interactive)
+
+  (let ((font "Andale Mono-10:antialias=false"))
+    (set-default-font font)
+    (set-face-attribute 'default nil :font font)
+    (set-frame-font font nil t))
+
+  (load-theme 'base16-monokai-dark t)
+  (set-face-background 'hl-line "#333333")
   (set-face-foreground 'highlight nil))
 
 (set-time-based-theme)
