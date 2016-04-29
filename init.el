@@ -33,9 +33,11 @@
         projectile
         company
         helm
+        helm-projectile
         lfe-mode
         flycheck
-        erlang))
+        erlang
+        go-mode))
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -127,6 +129,7 @@
 
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 
 ;; company mode
 (global-company-mode)
