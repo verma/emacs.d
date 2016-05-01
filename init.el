@@ -37,7 +37,9 @@
         lfe-mode
         flycheck
         erlang
-        go-mode))
+        go-mode
+        racket-mode))
+
 
 ; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -136,6 +138,10 @@
 
 ;; lfe mode
 (add-hook 'lfe-mode-hook #'paredit-mode)
+
+;; racket-mode
+(setq-default racket-racket-program "/Applications/Racket v6.2.1/bin/racket")
+(setq-default racket-raco-program "/Applications/Racket v6.2.1/bin/raco")
 
 ;; font
 (if (eq system-type 'darwin)
@@ -250,6 +256,11 @@
   (load-theme 'base16-monokai-dark t)
   (set-face-background 'hl-line "#333333")
   (set-face-foreground 'highlight nil))
+
+(defun sharp-mode-large ()
+  (interactive)
+  (sharp-mode)
+  (larger-font))
 
 (set-time-based-theme)
 
