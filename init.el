@@ -147,15 +147,23 @@
 (if (eq system-type 'darwin)
   (setq mac-allow-anti-aliasing t))
 
+(defun preferred-font (size)
+  (concat
+   (if (eq system-type 'darwin)
+       "PT Mono"
+     "Consolas")
+   "-" (number-to-string size)))
+
+
 (setq preferred-font
       (if (eq system-type 'darwin)
-          "Consolas-14"
-        "Consolas-10"))
+          (preferred-font 14)
+        (preferred-font 10)))
 
 
 (set-face-attribute 'default nil :font preferred-font)
 (set-frame-font preferred-font nil t)
-(setq-default lispy-spacing 3)
+(setq-default lispy-spacing 5)
 
 ;; helm
 (require 'helm-config)
@@ -209,7 +217,7 @@
 
 (defun larger-font ()
   (interactive)
-  (set-default-font "Consolas-18"))
+  (set-default-font (preferred-font 18)))
 
 (defun enable-ross-mode ()
   (interactive)
@@ -248,7 +256,7 @@
 (defun sharp-mode ()
   (interactive)
 
-  (let ((font "Andale Mono-10:antialias=false"))
+  (let ((font "Andale Mono-14:antialias=false"))
     (set-default-font font)
     (set-face-attribute 'default nil :font font)
     (set-frame-font font nil t))
@@ -262,5 +270,14 @@
   (sharp-mode)
   (larger-font))
 
-(set-time-based-theme)
+;;(set-time-based-theme)
+
+(defun kirk-mode ()
+  (interactive)
+  (set-default-font (preferred-font 22)))
+
+(sharp-mode-large)
+
+
+
 
