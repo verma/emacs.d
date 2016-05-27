@@ -231,13 +231,15 @@
   (interactive)
   (load-theme 'base16-bright-light t)
   (set-face-background 'hl-line "#ffffff")
-  (set-face-foreground 'highlight nil))
+  (set-face-foreground 'highlight nil)
+  (set-default-font (preferred-font 14)))
 
 (defun nighttime-colors ()
   (interactive)
   (load-theme 'base16-eighties-dark t)
   (set-face-background 'hl-line "#333333")
-  (set-face-foreground 'highlight nil))
+  (set-face-foreground 'highlight nil)
+  (set-default-font (preferred-font 14)))
 
 (defun current-hour ()
   (nth 2 (decode-time)))
