@@ -163,7 +163,7 @@
 
 (set-face-attribute 'default nil :font preferred-font)
 (set-frame-font preferred-font nil t)
-(setq-default lispy-spacing 5)
+(setq-default line-spacing 5)
 
 (defun set-advanced-ligatures ()
   (interactive)
