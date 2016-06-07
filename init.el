@@ -165,6 +165,8 @@
 (set-frame-font preferred-font nil t)
 (setq-default line-spacing 5)
 
+
+
 (defun set-advanced-ligatures ()
   (interactive)
   (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
@@ -229,7 +231,7 @@
 
 (defun daytime-colors ()
   (interactive)
-  (load-theme 'base16-bright-light t)
+  (load-theme 'adwaita)
   (set-face-background 'hl-line "#ffffff")
   (set-face-foreground 'highlight nil)
   (set-default-font (preferred-font 14)))
