@@ -34,6 +34,7 @@
         company
         helm
         helm-projectile
+        helm-clojuredocs
         lfe-mode
         flycheck
         erlang
@@ -93,6 +94,10 @@
             ;; need C-p to show completions
             ))
 
+(setq cider-auto-select-error-buffer nil)
+(setq cider-auto-jump-to-error nil)
+(setq cider-auto-select-test-report-buffer nil)
+
 (defvar om-methods
   (list 'render
         'render-state
@@ -115,6 +120,9 @@
     (put-clojure-indent v 'defun)))
 
 (add-hook 'clojure-mode-hook #'customize-clojure-indents)
+
+;; add a shortcut to quickly hint help-clojuredocs
+(global-set-key (kbd "C-c C-w") 'helm-clojuredocs-at-point)
 
 ;; smex
 (global-set-key (kbd "M-x") 'smex)
@@ -291,7 +299,7 @@
 (defun sharp-mode ()
   (interactive)
 
-  (let ((font "Andale Mono-14:antialias=false"))
+  (let ((font "Consolas-14"))
     (set-default-font font)
     (set-face-attribute 'default nil :font font)
     (set-frame-font font nil t))
@@ -312,7 +320,7 @@
   (set-default-font (preferred-font 22)))
 
 
-(sharp-mode-large)
+(sharp-mode)
 
 
 
