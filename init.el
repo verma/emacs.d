@@ -1,8 +1,14 @@
 ;; such emacs init
 ;;
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
 (require 'package)
 
+(package-initialize)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 
@@ -10,49 +16,12 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
 
-; list the packages you want
-(setq package-list
-      '(better-defaults
-        undo-tree
-        evil
-        paredit
-        evil-paredit
-        cider
-        clojure-mode
-        sass-mode
-        less-css-mode
-        git-gutter
-        powerline
-        smex
-        fiplr
-        clj-refactor
-        js2-mode
-        base16-theme
-        web-mode
-        yaml-mode
-        projectile
-        company
-        helm
-        helm-projectile
-        helm-clojuredocs
-        lfe-mode
-        flycheck
-        erlang
-        go-mode
-        racket-mode))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
+(require 'use-package)
 
-; activate all the packages (in particular autoloads)
-(package-initialize)
-
-; fetch the list of packages available
-(unless package-archive-contents
-  (package-refresh-contents))
-
-; install the missing package-s
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
 
 ;; general
 (setq inhibit-startup-message t) ;; no startup message
@@ -71,32 +40,30 @@
 (setq visible-bell nil) ;; The default
 (setq ring-bell-function 'ignore)
 
+(use-package powerline
+  :ensure t
+  :config (powerline-center-theme))
 
-;; evil
-(evil-mode 1)
+(use-package evil
+  :ensure t
+  :config (evil-mode 1))
 
-;; fiplr
-(setq fiplr-root-markers '(".git" ".svn"))
-(setq fiplr-ignored-globs '((directories (".git" ".svn" ".repl" "out" "target" "node_modules"))
-                            (files ("*.jpg" "*.png" "*.zip" "*~" ".*" "#*"))))
+(use-package paredit
+  :ensure t)
 
-(global-set-key (kbd "C-x C-p") 'fiplr-find-file)
+(use-package evil-paredit
+  :ensure t)
 
-;; powerline
-(powerline-center-theme)
+(use-package cider
+  :ensure t
+  :defer t
+  :config
+  (setq cider-auto-select-error-buffer nil)
+  (setq cider-auto-jump-to-error nil)
+  (setq cider-auto-select-test-report-buffer nil))
 
-;; clojure-mode
-(add-hook 'clojure-mode-hook
-          (lambda ()
-            ;; enable paredit mode
-            (paredit-mode)
-            (evil-paredit-mode)
-            ;; need C-p to show completions
-            ))
 
-(setq cider-auto-select-error-buffer nil)
-(setq cider-auto-jump-to-error nil)
-(setq cider-auto-select-test-report-buffer nil)
+
 
 (defvar om-methods
   (list 'render
@@ -119,209 +86,122 @@
   (dolist (v om-methods)
     (put-clojure-indent v 'defun)))
 
-(add-hook 'clojure-mode-hook #'customize-clojure-indents)
+(use-package clojure-mode
+  :ensure t
+  :defer t
+  :config (add-hook 'clojure-mode-hook
+                    (lambda ()
+                      (paredit-mode)
+                      (evil-paredit-mode)
+                      (customize-clojure-indents))))
 
-;; add a shortcut to quickly hint help-clojuredocs
-(global-set-key (kbd "C-c C-w") 'helm-clojuredocs-at-point)
+(use-package racket-mode
+  :ensure t
+  :config
+  (add-hook 'racket-mode-hook
+            (lambda ()
+              (paredit-mode)
+              (evil-paredit-mode)
+              (setq-default racket-racket-program "/Applications/Racket v6.8/bin/racket")
+              (setq-default racket-raco-program "/Applications/Racket v6.8/bin/raco"))))
 
-;; smex
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(use-package helm
+  :ensure t
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files))
+  :config
+  (helm-mode 1)
 
-;; clj-refactor
-(defun my-clojure-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import statements
-    ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (setq helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t))
 
-(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+(use-package helm-clojuredocs
+  :ensure t
+  :bind (("C-c C-w" . helm-clojuredocs-at-point)))
 
-;; web-mode
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(use-package clj-refactor
+  :ensure t
+  :defer t
+  :config
+  (clj-refactor-mode 1)
+  (yas-minor-mode 1) ; for adding require/use/import statements
+  ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (setq cljr-warn-on-eval nil))
 
-;; company mode
-(global-company-mode)
+(use-package company
+  :ensure t
+  :defer t
+  :config (global-company-mode))
 
-;; lfe mode
-(add-hook 'lfe-mode-hook #'paredit-mode)
+(use-package projectile
+  :ensure t
+  :defer t
+  :config
+  (projectile-global-mode)
 
-;; racket-mode
-(setq-default racket-racket-program "/Applications/Racket v6.2.1/bin/racket")
-(setq-default racket-raco-program "/Applications/Racket v6.2.1/bin/raco")
+  (setq projectile-enable-caching t)
+  (setq projectile-switch-project-action 'helm-projectile)
+  (setq projectile-completion-system 'helm))
 
-;; font
-(if (eq system-type 'darwin)
-  (setq mac-allow-anti-aliasing t))
+(use-package helm-projectile
+  :ensure t
+  :defer t)
 
-(defun preferred-font (size)
-  (concat
-   (if (eq system-type 'darwin)
-       "Fira Code"
-     "Consolas")
-   "-" (number-to-string size)))
+(use-package ag
+  :ensure t)
 
+(use-package helm-ag
+  :ensure t
+  :bind (("C-x C-f" . helm-projectile)
+         ("C-x C-u" . helm-projectile-ag)))
 
-(setq preferred-font
-      (if (eq system-type 'darwin)
-          (preferred-font 14)
-        (preferred-font 10)))
+(use-package dumb-jump
+  :ensure t
+  :defer t
+  :bind (("C-c C-i" . dumb-jump-go)
+         ("C-c C-o" . dumb-jump-back)))
 
+(use-package js2-mode
+  :ensure t
+  :defer t)
 
-(set-face-attribute 'default nil :font preferred-font)
-(set-frame-font preferred-font nil t)
-(setq-default line-spacing 5)
+(use-package web-mode
+  :ensure t
+  :defer t)
 
-
-
-(defun set-advanced-ligatures ()
+(defun disable-anti-aliasing ()
   (interactive)
-  (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-                 (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-                 (36 . ".\\(?:>\\)")
-                 (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-                 (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-                 (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-                 (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-                 (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-                 (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-                 (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-                 (48 . ".\\(?:x[a-zA-Z]\\)")
-                 (58 . ".\\(?:::\\|[:=]\\)")
-                 (59 . ".\\(?:;;\\|;\\)")
-                 (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-                 (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-                 (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-                 (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-                 (91 . ".\\(?:]\\)")
-                 (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-                 (94 . ".\\(?:=\\)")
-                 (119 . ".\\(?:ww\\)")
-                 (123 . ".\\(?:-\\)")
-                 (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-                 (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-                 )))
-    (dolist (char-regexp alist)
-      (set-char-table-range composition-function-table (car char-regexp)
-                            `([,(cdr char-regexp) 0 font-shape-gstring])))))
+  (if (eq system-type 'darwin)
+      (setq mac-allow-anti-aliasing nil)))
 
-;; helm
-(require 'helm-config)
 
-(helm-mode 1)
-(setq helm-M-x-fuzzy-match t
-      helm-buffers-fuzzy-matching t)
-
-(projectile-global-mode)
-
-(setq projectile-enable-caching t)
-(setq projectile-switch-project-action 'helm-projectile)
-(setq projectile-completion-system 'helm)
-
-(defun my-find-files ()
+(defun set-preferred-color-scheme ()
   (interactive)
-  (if (projectile-project-p)
-      (helm-projectile)
-    (fiplr-find-file)))
-
-(defun my-switch-to-buffer ()
-  (interactive)
-  (if (projectile-project-p)
-      (helm-projectile)
-    (helm-for-files)))
-
-(global-set-key (kbd "M-x") 'undefined)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-x C-p") 'my-find-files)
-(global-set-key (kbd "C-x b") 'my-switch-to-buffer)
-
-(defun daytime-colors ()
-  (interactive)
-  (load-theme 'adwaita)
-  (set-face-background 'hl-line "#ffffff")
-  (set-face-foreground 'highlight nil)
-  (set-default-font (preferred-font 14)))
-
-(defun nighttime-colors ()
-  (interactive)
-  (load-theme 'base16-eighties-dark t)
+  (load-theme 'base16-google-dark t)
   (set-face-background 'hl-line "#333333")
   (set-face-foreground 'highlight nil)
-  (set-default-font (preferred-font 14)))
+  (set-default-font "Ubuntu Mono 16"))
 
-(defun current-hour ()
-  (nth 2 (decode-time)))
-
-(defun set-time-based-theme ()
-  (let ((hour (current-hour)))
-    (if (< 7 hour 19) (daytime-colors) (nighttime-colors))))
-
-(defun larger-font ()
+(defun set-preferred-settings ()
   (interactive)
-  (set-default-font (preferred-font 18)))
-
-(defun enable-ross-mode ()
-  (interactive)
-  (setq-default indent-tabs-mode t)
-  (setq-default tab-width 4))
-
-(defun disable-ross-mode ()
-  (interactive)
-  (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 8))
-
-(defun vt220 ()
-  (interactive)
-
-  (let ((vt220-font "Glass TTY VT220-20"))
-    (set-face-attribute 'default nil :font vt220-font)
-    (set-frame-font vt220-font nil t))
-
-  (set-default-font "Glass TTY VT220-20")
-  (load-theme 'base16-greenscreen-dark t)
-  (set-face-background 'hl-line "#1f1f1f")
-  (set-face-foreground 'highlight nil))
-
-(defun vt220-light ()
-  (interactive)
-
-  (let ((vt220-font "Glass TTY VT220-20"))
-    (set-face-attribute 'default nil :font vt220-font)
-    (set-frame-font vt220-font nil t))
-
-  (set-default-font "Glass TTY VT220-20")
-  (load-theme 'base16-greenscreen-light t)
-  (set-face-background 'hl-line "#aaaaaa")
-  (set-face-foreground 'highlight nil))
-
-(defun sharp-mode ()
-  (interactive)
-
-  (let ((font "Consolas-14"))
-    (set-default-font font)
-    (set-face-attribute 'default nil :font font)
-    (set-frame-font font nil t))
-
-  (load-theme 'base16-monokai-dark t)
-  (set-face-background 'hl-line "#333333")
-  (set-face-foreground 'highlight nil))
-
-(defun sharp-mode-large ()
-  (interactive)
-  (sharp-mode)
-  (larger-font))
-
-;;(set-time-based-theme)
-
-(defun kirk-mode ()
-  (interactive)
-  (set-default-font (preferred-font 22)))
+  (setq line-spacing 5)
+  (set-preferred-color-scheme)
+  (disable-anti-aliasing))
 
 
-(sharp-mode)
-
-
-
-
+(set-preferred-settings)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (helm-ag ag yaml-mode web-mode use-package smex sass-mode rust-mode racket-mode pug-mode powerline php-mode lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
