@@ -102,8 +102,15 @@
             (lambda ()
               (paredit-mode)
               (evil-paredit-mode)
-              (setq-default racket-racket-program "/Applications/Racket v6.8/bin/racket")
-              (setq-default racket-raco-program "/Applications/Racket v6.8/bin/raco"))))
+              (cond
+               ((string-equal system-type "gnu/linux")
+                (progn
+                  (setq-default racket-racket-program "/usr/bin/racket")
+                  (setq-default racket-raco-program "/usr/bin/raco")))
+               ((string-equal system-type "darwin")
+                (progn
+                  (setq-default racket-racket-program "/Applications/Racket v6.8/bin/racket")
+                  (setq-default racket-raco-program "/Applications/Racket v6.8/bin/raco")))))))
 
 (use-package helm
   :ensure t
@@ -153,7 +160,8 @@
 
 (use-package helm-ag
   :ensure t
-  :bind (("C-x C-f" . helm-projectile)
+  :bind (("C-x C-p" . helm-find-files)
+         ("C-x C-p" . helm-projectile)
          ("C-x C-u" . helm-projectile-ag)))
 
 (use-package dumb-jump
@@ -181,7 +189,11 @@
   (load-theme 'base16-google-dark t)
   (set-face-background 'hl-line "#333333")
   (set-face-foreground 'highlight nil)
-  (set-default-font "Ubuntu Mono 16"))
+  (cond
+   ((string-equal system-type "gnu/linux")
+    (set-default-font "Ubuntu Mono 16"))
+   ((string-equal system-type "darwin")
+    (set-default-font "Ubuntu Mono 16"))))
 
 (defun set-preferred-settings ()
   (interactive)
@@ -189,19 +201,4 @@
   (set-preferred-color-scheme)
   (disable-anti-aliasing))
 
-
 (set-preferred-settings)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (helm-ag ag yaml-mode web-mode use-package smex sass-mode rust-mode racket-mode pug-mode powerline php-mode lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
