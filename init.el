@@ -178,6 +178,9 @@
   :ensure t
   :defer t)
 
+(use-package base16-theme
+  :ensure t)
+
 (defun disable-anti-aliasing ()
   (interactive)
   (if (eq system-type 'darwin)
@@ -186,17 +189,19 @@
 
 (defun set-preferred-color-scheme ()
   (interactive)
-  (load-theme 'base16-google-dark t)
+  (load-theme 'base16-materia t)
   (set-face-background 'hl-line "#333333")
   (set-face-foreground 'highlight nil)
   (cond
    ((string-equal system-type "gnu/linux")
-    (set-default-font "Ubuntu Mono 16"))
+    (set-default-font "Ubuntu Mono 14"))
    ((string-equal system-type "darwin")
     (set-default-font "Ubuntu Mono 16"))))
 
 (defun set-preferred-settings ()
   (interactive)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
   (setq line-spacing 5)
   (set-preferred-color-scheme)
   (disable-anti-aliasing))
