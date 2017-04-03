@@ -178,27 +178,33 @@
   :ensure t
   :defer t)
 
+(use-package base16-theme
+  :ensure t
+  :config
+  (load-theme 'base16-materia t)
+  (set-face-background 'hl-line "#333333")
+  (set-face-foreground 'highlight nil))
+  
+
 (defun disable-anti-aliasing ()
   (interactive)
   (if (eq system-type 'darwin)
       (setq mac-allow-anti-aliasing nil)))
 
 
-(defun set-preferred-color-scheme ()
-  (interactive)
-  (load-theme 'base16-google-dark t)
-  (set-face-background 'hl-line "#333333")
-  (set-face-foreground 'highlight nil)
-  (cond
-   ((string-equal system-type "gnu/linux")
-    (set-default-font "Ubuntu Mono 16"))
-   ((string-equal system-type "darwin")
-    (set-default-font "Ubuntu Mono 16"))))
-
 (defun set-preferred-settings ()
   (interactive)
   (setq line-spacing 5)
-  (set-preferred-color-scheme)
+
+  (cond
+   ((string-equal system-type "gnu/linux")
+    (set-default-font "DejaVu Sans Mono 12"))
+   ((string-equal system-type "darwin")
+    (set-default-font "Ubuntu Mono 16")))
+
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+
   (disable-anti-aliasing))
 
 (set-preferred-settings)
