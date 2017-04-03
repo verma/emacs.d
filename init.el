@@ -197,14 +197,19 @@
   (setq line-spacing 5)
 
   (cond
-   ((string-equal system-type "gnu/linux")
-    (set-default-font "DejaVu Sans Mono 12"))
-   ((string-equal system-type "darwin")
+   ((eq system-type 'gnu/linux)
+    (set-default-font "Ubuntu Mono 12"))
+   ((eq system-type 'darwin)
     (set-default-font "Ubuntu Mono 16")))
 
   (tool-bar-mode -1)
-  (menu-bar-mode -1)
+  (menu-bar-mode -1))
 
+(defun set-preferred-settings ()
+  (interactive)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (setq line-spacing 5)
   (disable-anti-aliasing))
 
 (set-preferred-settings)
