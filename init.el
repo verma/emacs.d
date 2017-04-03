@@ -178,6 +178,17 @@
   :ensure t
   :defer t)
 
+(use-package sass-mode
+  :ensure t
+  :defer t)
+
+(use-package magit
+  :ensure t
+  :defer t
+  :bind (("C-x G" . magit-status)))
+  
+ 
+
 (use-package base16-theme
   :ensure t
   :config
