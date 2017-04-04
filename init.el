@@ -42,7 +42,9 @@
 
 (use-package powerline
   :ensure t
-  :config (powerline-center-theme))
+  :config
+  (powerline-center-theme))
+  
 
 (use-package evil
   :ensure t
@@ -61,9 +63,6 @@
   (setq cider-auto-select-error-buffer nil)
   (setq cider-auto-jump-to-error nil)
   (setq cider-auto-select-test-report-buffer nil))
-
-
-
 
 (defvar om-methods
   (list 'render
@@ -185,9 +184,9 @@
 (use-package magit
   :ensure t
   :defer t
-  :bind (("C-x G" . magit-status)))
-  
- 
+  :bind (("C-x G" . magit-status))
+  :config
+  (setq vc-handled-backends ()))
 
 (use-package base16-theme
   :ensure t
