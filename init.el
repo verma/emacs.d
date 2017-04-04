@@ -191,9 +191,7 @@
 (use-package base16-theme
   :ensure t
   :config
-  (load-theme 'base16-materia t)
-  (set-face-background 'hl-line "#333333")
-  (set-face-foreground 'highlight nil))
+  (load-theme 'base16-materia t))
   
 
 (defun disable-anti-aliasing ()
@@ -202,24 +200,21 @@
       (setq mac-allow-anti-aliasing nil)))
 
 
-(defun set-preferred-settings ()
+(defun set-preferred-font ()
   (interactive)
-  (setq line-spacing 5)
-
-  (cond
-   ((eq system-type 'gnu/linux)
-    (set-default-font "Ubuntu Mono 12"))
-   ((eq system-type 'darwin)
-    (set-default-font "Ubuntu Mono 16")))
-
-  (tool-bar-mode -1)
-  (menu-bar-mode -1))
+  (set-default-font
+   (cond
+    ((eq system-type 'gnu/linux)
+     "Ubuntu Mono 14")
+    ((eq system-type 'darwin)
+     "Ubuntu Mono 16"))))
 
 (defun set-preferred-settings ()
   (interactive)
+  (set-preferred-font)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-  (setq line-spacing 5)
+  (setq-default line-spacing 6)
   (disable-anti-aliasing))
 
 (set-preferred-settings)
