@@ -167,7 +167,7 @@
   :ensure t
   :defer t
   :bind (("C-c C-i" . dumb-jump-go)
-         ("C-c C-o" . dumb-jump-back)))
+         ("C-c i" . dumb-jump-back)))
 
 (use-package js2-mode
   :ensure t
