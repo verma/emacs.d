@@ -199,7 +199,6 @@
   (if (eq system-type 'darwin)
       (setq mac-allow-anti-aliasing nil)))
 
-
 (defun set-preferred-font ()
   (interactive)
   (set-default-font
@@ -214,7 +213,7 @@
   (set-preferred-font)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-  (setq-default line-spacing 6)
-  (disable-anti-aliasing))
+  (setq-default line-spacing 6))
 
 (set-preferred-settings)
+
