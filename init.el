@@ -177,7 +177,7 @@
   :ensure t
   :defer t)
 
-(use-package sass-mode
+(use-package scss-mode
   :ensure t
   :defer t)
 
