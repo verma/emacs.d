@@ -204,7 +204,7 @@
   (set-default-font
    (cond
     ((eq system-type 'gnu/linux)
-     "Ubuntu Mono 14")
+     "Ubuntu Mono 12")
     ((eq system-type 'darwin)
      "Ubuntu Mono 16"))))
 
