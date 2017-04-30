@@ -189,10 +189,10 @@
   (setq vc-handled-backends ()))
 
 (use-package base16-theme
-  :ensure t
-  :config
-  (load-theme 'base16-materia t))
-  
+  :ensure t)
+
+(use-package github-theme
+  :ensure t)
 
 (defun disable-anti-aliasing ()
   (interactive)
@@ -213,7 +213,22 @@
   (set-preferred-font)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-  (setq-default line-spacing 6))
+  (setq-default line-spacing 6)
+  (load-theme 'github t))
 
 (set-preferred-settings)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
