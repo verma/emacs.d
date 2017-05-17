@@ -213,6 +213,9 @@
 (use-package zenburn-theme
   :ensure t)
 
+(use-package dracula-theme
+  :ensure t)
+
 (defun disable-anti-aliasing ()
   (interactive)
   (if (eq system-type 'darwin)
@@ -233,7 +236,7 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (setq-default line-spacing 6)
-  (load-theme 'leuven t))
+  (load-theme 'dracula t))
 
 (set-preferred-settings)
 
