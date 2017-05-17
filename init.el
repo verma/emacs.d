@@ -1,5 +1,4 @@
-;; such emacs init
-;;
+;; Maximum emacs configuration
 
 
 ;; Added by Package.el.  This must come before configurations of
@@ -7,6 +6,8 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (require 'package)
+
+;;; Code:
 
 (package-initialize)
 (add-to-list 'package-archives
@@ -58,7 +59,6 @@
 
 (use-package cider
   :ensure t
-  :defer t
   :config
   (setq cider-auto-select-error-buffer nil)
   (setq cider-auto-jump-to-error nil)
@@ -93,6 +93,21 @@
                       (paredit-mode)
                       (evil-paredit-mode)
                       (customize-clojure-indents))))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode))
+
+(use-package flycheck-clojure
+  :ensure t
+  :config
+  (eval-after-load 'flycheck '(flycheck-clojure-setup)))
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :config
+  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 (use-package racket-mode
   :ensure t
@@ -138,7 +153,8 @@
 (use-package company
   :ensure t
   :defer t
-  :config (global-company-mode))
+  :init (global-company-mode)
+  :diminish company-mode)
 
 (use-package projectile
   :ensure t
@@ -194,6 +210,9 @@
 (use-package github-theme
   :ensure t)
 
+(use-package zenburn-theme
+  :ensure t)
+
 (defun disable-anti-aliasing ()
   (interactive)
   (if (eq system-type 'darwin)
@@ -206,7 +225,7 @@
     ((eq system-type 'gnu/linux)
      "Ubuntu Mono 12")
     ((eq system-type 'darwin)
-     "Ubuntu Mono 16"))))
+     "Ubuntu Mono 18"))))
 
 (defun set-preferred-settings ()
   (interactive)
@@ -214,7 +233,7 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (setq-default line-spacing 6)
-  (load-theme 'github t))
+  (load-theme 'leuven t))
 
 (set-preferred-settings)
 
@@ -225,7 +244,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
+    (leuven-theme graphql-mode github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
