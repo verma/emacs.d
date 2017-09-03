@@ -114,7 +114,11 @@
   :config
   (add-hook 'racket-mode-hook
             (lambda ()
-              (paredit-mode)
+	      (custom-set-faces
+            ;; racket-mode
+            '(racket-paren-face ((((background dark)) (face-attribute 'default :foreground))
+                                 (((background light)) (face-attribute 'default :foreground)))))
+	      (paredit-mode)
               (evil-paredit-mode)
               (cond
                ((string-equal system-type "gnu/linux")
@@ -204,14 +208,15 @@
   :config
   (setq vc-handled-backends ()))
 
-(use-package base16-theme
-  :ensure t)
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 
-(use-package github-theme
-  :ensure t)
-
-(use-package zenburn-theme
-  :ensure t)
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x o") 'ace-window))
 
 (use-package dracula-theme
   :ensure t)
@@ -247,7 +252,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (leuven-theme graphql-mode github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
+    (ace-window which-key color-theme-modern dockerfile-mode docker json-mode scribble-mode flycheck-elixir elixir-mode kotlin-mode leuven-theme graphql-mode github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
