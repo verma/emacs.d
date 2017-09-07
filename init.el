@@ -226,6 +226,11 @@
   (if (eq system-type 'darwin)
       (setq mac-allow-anti-aliasing nil)))
 
+(defun proggy-mode ()
+  (interactive)
+  (set-default-font "ProggyCleanTT 16")
+  (disable-anti-aliasing))
+
 (defun set-preferred-font ()
   (interactive)
   (set-default-font
