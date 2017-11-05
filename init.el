@@ -37,6 +37,10 @@
       kept-old-versions 2
       version-control t)
 
+;; start with a somewhat decent size window
+(when window-system
+  (set-frame-size (selected-frame) 150 50))
+
 ;; visual bell glitches fixes.
 (setq visible-bell nil) ;; The default
 (setq ring-bell-function 'ignore)
