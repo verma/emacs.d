@@ -49,7 +49,9 @@
   :ensure t
   :config
   (powerline-center-theme))
-  
+
+(use-package auto-highlight-mode
+  :ensure t)
 
 (use-package evil
   :ensure t
@@ -131,8 +133,8 @@
                   (setq-default racket-raco-program "/usr/bin/raco")))
                ((string-equal system-type "darwin")
                 (progn
-                  (setq-default racket-racket-program "/Applications/Racket v6.8/bin/racket")
-                  (setq-default racket-raco-program "/Applications/Racket v6.8/bin/raco")))))))
+                  (setq-default racket-racket-program "/usr/local/bin/racket")
+                  (setq-default racket-raco-program "/usr/local/bin/raco")))))))
 
 (use-package helm
   :ensure t
@@ -242,7 +244,7 @@
     ((eq system-type 'gnu/linux)
      "Ubuntu Mono 12")
     ((eq system-type 'darwin)
-     "Ubuntu Mono 18"))))
+     "Office Code Pro 15"))))
 
 (defun set-preferred-settings ()
   (interactive)
@@ -263,7 +265,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ace-window which-key color-theme-modern dockerfile-mode docker json-mode scribble-mode flycheck-elixir elixir-mode kotlin-mode leuven-theme graphql-mode github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
+    (auto-highlight-symbol cmake-mode ace-window which-key color-theme-modern dockerfile-mode docker json-mode scribble-mode flycheck-elixir elixir-mode kotlin-mode leuven-theme graphql-mode github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
