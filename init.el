@@ -50,8 +50,10 @@
   :config
   (powerline-center-theme))
 
-(use-package auto-highlight-mode
-  :ensure t)
+(use-package auto-highlight-symbol
+  :ensure t
+  :config
+  (global-auto-highlight-symbol-mode t))
 
 (use-package evil
   :ensure t
