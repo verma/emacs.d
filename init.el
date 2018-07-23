@@ -28,10 +28,11 @@
 (setq inhibit-startup-message t) ;; no startup message
 (global-hl-line-mode) ;; highlight current line
 (setq exec-path (append exec-path '("/usr/local/bin")))
+(global-unset-key "\C-x\C-c")
+(global-set-key "\C-x\C-\\" 'save-buffers-kill-terminal)
 
 (setq backup-by-copying t
-      backup-directory-alist
-      '(("." . "~/.saves"))
+      backup-directory-alist '((".*" . "c:/Code/vimtemp"))
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
@@ -53,24 +54,32 @@
 (use-package auto-highlight-symbol
   :ensure t
   :config
-  (global-auto-highlight-symbol-mode t))
+  (global-auto-highlight-symbol-mode 1))
+
+(use-package highlight-indent-guides
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'character))
+
+
 
 (use-package evil
   :ensure t
   :config (evil-mode 1))
 
 (use-package paredit
-  :ensure t)
+  :ensure t
+  :bind (("C->" . paredit-forward-slurp-sexp)
+	 ("C-<" . paredit-backward-slurp-sexp)))
 
 (use-package evil-paredit
   :ensure t)
 
-(use-package cider
+(use-package inf-clojure
   :ensure t
   :config
-  (setq cider-auto-select-error-buffer nil)
-  (setq cider-auto-jump-to-error nil)
-  (setq cider-auto-select-test-report-buffer nil))
+  (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode))
 
 (defvar om-methods
   (list 'render
@@ -105,17 +114,17 @@
 (use-package flycheck
   :ensure t
   :config
-  (global-flycheck-mode))
-
-(use-package flycheck-clojure
-  :ensure t
-  :config
-  (eval-after-load 'flycheck '(flycheck-clojure-setup)))
+  (global-flycheck-mode)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
+  
 
 (use-package flycheck-pos-tip
   :ensure t
   :config
   (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+
+(use-package flycheck-joker
+  :ensure t)
 
 (use-package racket-mode
   :ensure t
@@ -152,16 +161,6 @@
   :ensure t
   :bind (("C-c C-w" . helm-clojuredocs-at-point)))
 
-(use-package clj-refactor
-  :ensure t
-  :defer t
-  :config
-  (clj-refactor-mode 1)
-  (yas-minor-mode 1) ; for adding require/use/import statements
-  ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-  (cljr-add-keybindings-with-prefix "C-c C-m")
-  (setq cljr-warn-on-eval nil))
-
 (use-package company
   :ensure t
   :defer t
@@ -194,8 +193,8 @@
 (use-package dumb-jump
   :ensure t
   :defer t
-  :bind (("C-c C-i" . dumb-jump-go)
-         ("C-c i" . dumb-jump-back)))
+  :bind (("C-c C-;" . dumb-jump-go)
+         ("C-c ;" . dumb-jump-back)))
 
 (use-package js2-mode
   :ensure t
@@ -246,7 +245,24 @@
     ((eq system-type 'gnu/linux)
      "Ubuntu Mono 12")
     ((eq system-type 'darwin)
-     "Office Code Pro 15"))))
+     "Office Code Pro 15")
+    ((eq system-type 'windows-nt)
+     "PragmataPro 12"))))
+
+
+
+(setq whitespace-items '(whitespace-space whitespace-tab))
+
+(defun set-whitespace-mode-prefs ()
+  (dolist (face whitespace-items nil)
+    (set-face-attribute 'whitespace-space nil
+			:background (face-attribute 'default :background)
+			:foreground "#444444"))
+  (setq whitespace-display-mappings
+	'((space-mark 32 [46])
+	  (newline-mark 10 [])
+	  (tab-mark 9 [8677 9]))))
+
 
 (defun set-preferred-settings ()
   (interactive)
@@ -258,6 +274,19 @@
   (setq-default line-spacing 6)
   (load-theme 'dracula t))
 
+(defun light-mode ()
+  (interactive)
+  (load-theme 'adwaita t)
+  (set-face-background 'hl-line "#cccccc")
+  (set-face-foreground 'highlight nil)
+  (set-face-attribute 'helm-selection nil
+		      :background "purple"
+		      :foreground "white"))
+  
+
+  
+  
+
 (set-preferred-settings)
 
 (custom-set-variables
@@ -267,7 +296,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (auto-highlight-symbol cmake-mode ace-window which-key color-theme-modern dockerfile-mode docker json-mode scribble-mode flycheck-elixir elixir-mode kotlin-mode leuven-theme graphql-mode github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
+    (highlight-indent-guides flycheck-joker inf-clojure auto-highlight-symbol cmake-mode ace-window which-key color-theme-modern dockerfile-mode docker json-mode scribble-mode flycheck-elixir elixir-mode kotlin-mode leuven-theme graphql-mode github-theme yaml-mode web-mode use-package smex scss-mode sass-mode rust-mode racket-mode pug-mode powerline php-mode magit lfe-mode less-css-mode js2-mode helm-projectile helm-clojuredocs helm-ag go-mode git-gutter flycheck-rust fiplr evil-paredit erlang dumb-jump company clj-refactor better-defaults base16-theme ag))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
